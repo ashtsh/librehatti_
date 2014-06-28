@@ -34,8 +34,8 @@ class PurchaseOrder(models.Model):
     organisation = models.ForeignKey('useraccounts.AdminOrganisations')
     date_time = models.DateTimeField(auto_now_add=True)
     def __unicode__(self):
-        return '%s' % (self.buyer_id) 
-#+' - ' '%s' % (self.date_time.strftime('%b %d, %Y'))
+        return '%s' % (self.buyer_id) +' - ' '%s' % (self.date_time.strftime
+               ('%b %d, %Y'))
 
 
 class PurchasedItem(models.Model):

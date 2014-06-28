@@ -1,0 +1,63 @@
+<html>
+<head>
+ 	<meta http-equiv="refresh" content="3">
+	<style type="text/css">
+	h1{margin-left: 30%;}
+	h1.as{margin-left: 35%;} 
+	
+	 table{width: 60%; margin-left:15%;}
+	th,td{padding:10px;}
+	
+	p.desg{text-align: right;}
+	p.ser{margin-left: 40%;}
+	p.dtc{margin-left: 70%;}
+
+</style>
+ 	<title>	
+	Report Generation
+	</title>		
+</head> 
+<body>
+<h1>Guru Nanak Dev Engineering College</h1>
+<h1 class='as'>Testing and Consultancy</h1>
+<p class="desg">No.TCC Job/Voucher : {{number}}</p>
+<p class='desg'><span>Director,</span>Dated:{{date}} </p> 
+<b><p class='ser'>SERVICE TAX DETAIL</p></b>
+<table border="1">
+<tr>
+	<td>Total</td>
+	<td>{{value1}}</td>
+</tr>
+
+<tr>
+	<td>Service Tax:@12.0% </td>
+	<td>{{value2}}</td>
+</tr>
+
+<tr>
+ 	<td>Education cess @ 0.24%</td>
+	<td> {{value3}}</td>
+</tr>
+
+<tr>
+	<td>Higher Education Cess @ 0.12%</td>
+	<td>{{value4}}</td>
+</tr>
+
+<tr> 
+	<td> Total Amount</td>
+	<td>{{value5}}</td>
+</tr>
+
+
+
+
+</table>
+<br>
+<br>
+<br>
+<p class="dtc"> DEAN TESTING AND CONSULTANCY </p>
+	
+</body>
+
+</html>

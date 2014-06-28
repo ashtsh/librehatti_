@@ -1,0 +1,15 @@
+from django.db import models
+from django.db import models
+import useraccounts
+from django.contrib.auth.models import User
+ 
+class QuotedOrder(models.Model):
+	quote_buyer_id = models.ForeignKey(User)
+	quote_is_debit = models.BooleanField()
+	quote_delivery_address = models.ForeignKey('useraccounts.Address')
+	quote_organisation = models.ForeignKey('useraccounts.AdminOrganisations')
+	quote_date_time = models.DateTimeField(auto_now_add=True)
+	def __unicode__(self):
+		return '%s' % (self.quote_buyer_id) +' - ' '%s' % (self.quote_date_time.strftime ('%b %d, %Y'))
+ 
+

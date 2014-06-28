@@ -6,9 +6,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 
-urlpatterns = patterns('',url(r'^index/','librehatti.report.views.index'),url(r'^bill/','librehatti.report.views.bill'),
-       url(r'^display/','librehatti.report.views.display'), url(r'^$', 'librehatti.catalog.views.index'),
-        #url(r'^report/', 'librehatti.report.views.report'),
+urlpatterns = patterns('',url(r'^bill/','librehatti.report.views.bill'),
+        url(r'^$', 'librehatti.catalog.views.index'),
+        url(r'^report/', 'librehatti.report.views.report'),
         url(r'^catalog/', include('librehatti.catalog.urls')),
         url(r'^useraccounts/', include('useraccounts.urls')),
         url(r'^admin/', include(admin.site.urls)),

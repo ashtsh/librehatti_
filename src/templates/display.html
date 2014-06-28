@@ -1,0 +1,40 @@
+
+<html>
+<head> <title> display </title> 
+<style>
+.else { color : red ; }
+h2, .else { text-align :center; margin-top:5%; }
+table{display: inline-block;}
+table,th,td{border: 1px solid black; border-collapse: collapse;}
+</style>
+</head>
+<body>
+
+<h1>{{ title }}</h1>
+
+
+
+{% for result in results  %}
+ 
+<table>
+  {% for j in result %} 
+   
+    {% for i in j.items %}
+        {% ifequal forloop.parentloop.counter 1 %}
+
+          <tr>
+           <th>{{i.0}}</th></tr>
+         {% endifequal %}
+
+          <tr><td>{{i.1}}</td></tr>
+
+    {%endfor%}
+  {%endfor%}
+</table>	
+{%endfor%}
+{% if error %}
+<h3 class="else"> Please select atleast one field </h3>
+{% endif %}
+
+</body>
+</html>
