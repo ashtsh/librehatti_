@@ -23,7 +23,7 @@ class GenerateRegister(View):
         """
         Initializing required lists.
         """
-
+	
     	self.result_fields = []
         self.list_dict = {'name':'purchase_order__buyer__username', 
             'city':'purchase_order__buyer__customer__address__city',
@@ -52,7 +52,7 @@ class GenerateRegister(View):
 
         temp = {'client':self.selected_fields_client,
             'order':self.selected_fields_order, 'result':generated_data_list,
-            'title':self.title
+            'title':self.title,'as':self.details
         }
 
         return render(request,'reports/generated_register.html',temp)
