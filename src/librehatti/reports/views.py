@@ -35,7 +35,7 @@ class SearchResult(View):
             
             'discount':'purchase_order__total_discount',
             'debit':'purchase_order__is_debit', 
-	    'mode of payment':'purchase_order__mode_of_payment__method'
+	    'mode of payment':'purchase_order__mode_of_payment__method',
         }
 
 
@@ -55,29 +55,18 @@ class SearchResult(View):
 
         temp = {'client':self.selected_fields_client,
             'order':self.selected_fields_order, 'result':generated_data_list,
-            'title':self.title,'order_id':self.purchase_order_id,'records':self.results
+            'title':self.title,'order_id':self.purchase_order_id,'records':self.results,
         }
 
         return render(request,'reports/search_result.html',temp)
 
-        ''' def apply_filters(self,request):
-        """
-        Applying selected filters.
-        """
-
-        if 'date' in self.selected_fields_constraints:
-            self.details = self.client_details.filter(
-            	purchase_order__date_time__range = (
-            		self.start_date,self.end_date))
-
-        return self.view_register(request)'''
-    
     def apply_filter(self,request):
 	self.results=[]
 	self.r=get_query(self.title,self.fields_list)
-	self.found_entries = PurchasedItem.objects.filter(self.r)
+	
+
 	if 'Client' in request.GET:
-		
+		self.found_entries = PurchasedItem.objects.filter(self.r)
 		for entries in self.found_entries:
         		self.temp = []
                 	for value in self.fields_list:
@@ -87,24 +76,46 @@ class SearchResult(View):
               	               	self.temp.append(temp_result)
                         self.results.append(self.temp)
         if 'Order' in request.GET:
-                
-		for entries in self.found_entries:
-        		self.temp = []
-                	for value in self.fields_list:
-				try:
-					if request.GET['suspense']:
-						self.obj = SuspenseOrder.objects.filter(id=entries.id).values(value).filter(purchase_order__id=self.title)
-				except:
+                try:
+			if request.GET['suspense']:
+				self.found_entries = SuspenseOrder.objects.filter(self.r)
+		
+				for entries in self.found_entries:
+        				self.temp = []
+                			for value in self.fields_list:
+                		 	      	self.obj = SuspenseOrder.objects.filter(id=entries.id).values(value).filter(purchase_order__id=self.title)
+                		      	        for temp_result in self.obj:
+              			               		self.temp.append(temp_result)
+                		        self.results.append(self.temp)
+		except:
+			self.found_entries = PurchasedItem.objects.filter(self.r)
+		
+			for entries in self.found_entries:
+        			self.temp = []
+                		for value in self.fields_list:
+                	 	      	self.obj = PurchasedItem.objects.filter(id=entries.id).values(value).filter(purchase_order__id=self.title)
+                	      	        for temp_result in self.obj:
+              		               		self.temp.append(temp_result)
+                	        self.results.append(self.temp)
 
-                 	      		self.obj = PurchasedItem.objects.filter(id=entries.id).values(value).filter(purchase_order__id=self.title)
-                      	        for temp_result in self.obj:
-              	               		self.temp.append(temp_result)
-                        self.results.append(self.temp)
         
         
         return self.view_register(request)
 
-    
+    def default_fields(self,request):
+	
+	if 'Client' in request.GET and not self.selected_fields_client:
+		self.selected_fields_client.append('name')
+		self.selected_fields_client.append('city')
+	if 'Order' in request.GET and not self.selected_fields_order:
+		self.selected_fields_client.append('name')
+		self.selected_fields_client.append('city')
+		self.selected_fields_order.append('debit')
+		self.selected_fields_order.append('mode of payment')
+	
+	return self.convert_values(request)
+
+
     def fetch_values(self,request):
         """
         Fetching values from database.
@@ -140,28 +151,12 @@ class SearchResult(View):
         """
         Retrieve values from URL.
         Convert date into datetime format.
-        """
-
-    	
-
-    	'''start_date_temp = datetime.strptime(request.GET['start_date'],
-    		'%Y-%m-%d')
-    	self.start_date = datetime(start_date_temp.year, start_date_temp.month, 
-    		start_date_temp.day) + timedelta(hours=0) 
-
-    	end_date_temp = datetime.strptime(request.GET['end_date'], '%Y-%m-%d')
-
-        #adding 24 hours in date will convert '2014-8-10' to '2014-8-10 00:00:00'
-    	
-        self.end_date = datetime(end_date_temp.year, end_date_temp.month, 
-    		end_date_temp.day) + timedelta(hours=24) '''
+        """	
         self.title = request.GET['search']
         self.selected_fields_client = request.GET.getlist('client_fields')
         self.selected_fields_order = request.GET.getlist('order')
-        #self.selected_fields_constraints = request.GET.getlist(
-        	#'additional_constraints')
         self.result_fields.append(self.selected_fields_client)
         self.result_fields.append(self.selected_fields_order)
 
-        return self.convert_values(request)
+        return self.default_fields(request)
 
